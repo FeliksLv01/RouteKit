@@ -2,6 +2,7 @@
 
 ## 协作约定
 
+0. `TKRouter` 必须同时支持 Swift Package Manager 和 CocoaPods；共享同一份 `Sources/TKRouter` 和 `Tests/TKRouterTests`。
 1. `TKRouter` 是公开的 Swift URL 路由库，源码和文档不得包含业务仓库、内部域名或私有服务依赖。
 2. 路由类型使用 TKMacros 提供的 `@Route`，自动发现 section 固定为 `__DATA_CONST,__tk_routes`。
 3. `RouterConfig` 必须在第一次 `Router.open` 或 `Router.canOpen` 前完成配置。

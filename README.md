@@ -8,19 +8,40 @@ TKRouter 是一个 Swift URL 路由库，提供宏注册、路径参数、优先
 - Swift 6.0+
 - TKMacros 0.0.4+
 
-## Installation
+## Swift Package Manager
+
+在 Xcode 的 Package Dependencies 中添加：
+
+```text
+https://github.com/TokenTeamiOS/TKRouter.git
+```
+
+或在 `Package.swift` 中声明：
+
+```swift
+dependencies: [
+    .package(
+        url: "https://github.com/TokenTeamiOS/TKRouter.git",
+        from: "0.1.0"
+    )
+]
+```
+
+然后将 `TKRouter` library product 添加到 iOS target。SwiftPM 会自动解析并构建 TKMacros 的原生 macro target。
+
+## CocoaPods
 
 ```ruby
 pod 'TKRouter'
 ```
 
-TKRouter 会依赖并 re-export TKMacros，业务代码只需导入 TKRouter：
+两种依赖方式下，TKRouter 都会依赖并 re-export TKMacros，业务代码只需导入 TKRouter：
 
 ```swift
 import TKRouter
 ```
 
-如果 Pod target 无法展开间接依赖中的宏，请在 Podfile 中加载 TKMacros 提供的 Swift flags 脚本：
+使用 CocoaPods 时，如果 Pod target 无法展开间接依赖中的宏，请在 Podfile 中加载 TKMacros 提供的 Swift flags 脚本：
 
 ```ruby
 require_relative 'Pods/TKMacros/Scripts/tk_swift_flags'
