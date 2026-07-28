@@ -4,10 +4,10 @@ Pod::Spec.new do |s|
   s.name = 'TKRouter'
   s.version = '0.1.0'
   s.summary = 'A type-safe Swift URL router with macro-based automatic registration'
-  s.homepage = 'https://github.com/TokenTeamiOS/TKRouter'
+  s.homepage = 'https://github.com/FeliksLv01/TKRouter'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
-  s.author = { 'TokenTeam' => 'tokenteamios@163.com' }
-  s.source = { :git => 'https://github.com/TokenTeamiOS/TKRouter.git', :tag => s.version.to_s }
+  s.author = { 'FeliksLv01' => 'felikslv@163.com' }
+  s.source = { :git => 'https://github.com/FeliksLv01/TKRouter.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '13.0'
   s.swift_version = '6.0'
