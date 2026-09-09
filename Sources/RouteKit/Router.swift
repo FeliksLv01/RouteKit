@@ -1,7 +1,18 @@
 import Foundation
 
 @MainActor
+/// Resolves and opens registered URL routes.
+///
+/// Configure ``RouterConfig`` before using this type. The first routing or
+/// availability request freezes the global configuration.
 public enum Router {
+    /// Opens a route and waits for its handler and middleware chain to finish.
+    ///
+    /// - Parameters:
+    ///   - url: A URL or string accepted by ``URLConvertible``.
+    ///   - params: Values to merge into the route context. Explicit values override query and path parameters.
+    /// - Returns: `true` when an interceptor or route handler reports that it handled the request.
+    /// - Throws: A ``RouteError`` or an error thrown by an action route or middleware.
     @discardableResult
     public static func open(_ url: any URLConvertible, params: [String: Any]? = nil) async throws -> Bool {
         switch try RouterRuntime.shared.resolve(url, params: params ?? [:], appliesURLInterceptors: true) {
@@ -60,6 +71,18 @@ public enum Router {
         }
     }
 
+    /// Starts opening a route and returns a cancellable execution handle.
+    ///
+    /// Page routes without middleware execute immediately. Action routes and routes with middleware may continue
+    /// asynchronously through the returned ``RouteExecution``.
+    ///
+    /// Errors are delivered to ``RouterConfig/unhandledErrorHandler`` and this method returns `nil` when route
+    /// resolution or synchronous execution fails.
+    ///
+    /// - Parameters:
+    ///   - url: A URL or string accepted by ``URLConvertible``.
+    ///   - params: Values to merge into the route context. Explicit values override query and path parameters.
+    /// - Returns: An execution handle, or `nil` if the request could not be started.
     @discardableResult
     public static func open(_ url: any URLConvertible, params: [String: Any]? = nil) -> RouteExecution? {
         do {
@@ -80,6 +103,12 @@ public enum Router {
         }
     }
 
+    /// Returns whether a URL resolves to a registered route.
+    ///
+    /// This performs a dry run, so interceptors receive a request whose ``RouteURLRequest/isDryRun`` value is `true`.
+    /// Calling this method freezes ``RouterConfig``.
+    ///
+    /// - Parameter url: A URL or string accepted by ``URLConvertible``.
     public static func canOpen(_ url: any URLConvertible) -> Bool {
         RouterRuntime.shared.canResolve(url)
     }

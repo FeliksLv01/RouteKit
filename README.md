@@ -4,6 +4,17 @@
 
 RouteKit is a standalone Swift URL router with built-in macro registration, path parameters, route priorities, URL interceptors, middleware, and synchronous and asynchronous execution APIs.
 
+## Documentation
+
+- [Getting Started](Sources/RouteKit/RouteKit.docc/GettingStarted.md)
+- [Defining Routes](Sources/RouteKit/RouteKit.docc/DefiningRoutes.md)
+- [Executing Routes](Sources/RouteKit/RouteKit.docc/ExecutingRoutes.md)
+- [Interceptors and Middleware](Sources/RouteKit/RouteKit.docc/InterceptorsAndMiddleware.md)
+- [Installation](Sources/RouteKit/RouteKit.docc/Installation.md)
+- [DocC landing page](Sources/RouteKit/RouteKit.docc/RouteKit.md)
+
+The README is a practical overview. The DocC catalog contains the complete guides and generated API reference. Open the package in Xcode and choose **Product > Build Documentation** to browse it in the documentation viewer.
+
 ## Requirements
 
 - iOS 13.0+

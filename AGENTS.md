@@ -16,6 +16,7 @@
 12. Do not commit generated Xcode projects, workspaces, DerivedData, or SwiftPM build directories.
 13. Do not add file-header comments to new Swift files.
 14. Keep `README.md` in English and maintain the equivalent Simplified Chinese documentation in `README.zh-CN.md` when public APIs, requirements, or installation steps change.
+15. Document every public API with DocC-compatible comments. Keep the English guides in `Sources/RouteKit/RouteKit.docc` aligned with behavior, and validate documentation changes with an iOS `xcodebuild docbuild`.
 
 ## Commits
 

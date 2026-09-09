@@ -4,6 +4,17 @@
 
 RouteKit 是一个独立的 Swift URL 路由库，提供内置宏注册、路径参数、路由优先级、URL 拦截器、中间件以及同步和异步执行 API。
 
+## 文档
+
+- [快速入门](Sources/RouteKit/RouteKit.docc/GettingStarted.md)
+- [定义路由](Sources/RouteKit/RouteKit.docc/DefiningRoutes.md)
+- [执行路由](Sources/RouteKit/RouteKit.docc/ExecutingRoutes.md)
+- [拦截器和中间件](Sources/RouteKit/RouteKit.docc/InterceptorsAndMiddleware.md)
+- [安装](Sources/RouteKit/RouteKit.docc/Installation.md)
+- [DocC 首页](Sources/RouteKit/RouteKit.docc/RouteKit.md)
+
+README 提供常用功能概览；DocC catalog 包含完整指南和自动生成的 API Reference。在 Xcode 中打开 package，然后选择 **Product > Build Documentation**，即可在文档浏览器中查看。
+
 ## 环境要求
 
 - iOS 13.0+
