@@ -1,5 +1,5 @@
 import XCTest
-@testable import TKRouter
+@testable import RouteKit
 
 @MainActor
 final class RouteMacroIntegrationTests: XCTestCase {

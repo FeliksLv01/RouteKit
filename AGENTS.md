@@ -1,20 +1,25 @@
 # AGENTS.md
 
-## 协作约定
+## Project rules
 
-0. `TKRouter` 必须同时支持 Swift Package Manager 和 CocoaPods；共享同一份 `Sources/TKRouter` 和 `Tests/TKRouterTests`。
-1. `TKRouter` 是公开的 Swift URL 路由库，源码和文档不得包含业务仓库、内部域名或私有服务依赖。
-2. 路由类型使用 TKMacros 提供的 `@Route`，自动发现 section 固定为 `__DATA_CONST,__tk_routes`。
-3. `RouterConfig` 必须在第一次 `Router.open` 或 `Router.canOpen` 前完成配置。
-4. 修改匹配、注册、优先级、拦截器或中间件行为时，必须同步补充 `Tests/TKRouterTests`。
-5. xcodebuild 输出使用 xcbeautify，优先使用 `generic/platform=iOS` 真机架构验证。
-6. pod/bundle 命令使用系统 Ruby 和 rbenv 环境，不在沙盒中执行。
-7. 不提交生成的 xcodeproj 或 xcworkspace。
-8. 新增 Swift 文件不添加文件头注释。
+1. RouteKit must support both Swift Package Manager and CocoaPods. Both integrations must compile the same runtime sources from `Sources/RouteKit` and use the same integration tests from `Tests/RouteKitTests`.
+2. RouteKit is an open-source Swift URL routing library. Source code, tests, and documentation must not reference private applications, internal domains, credentials, or proprietary service dependencies.
+3. The runtime library supports iOS 13 and Mac Catalyst 13 or later. It does not support macOS because `PageRoute` depends on UIKit. The macOS platform in `Macros/Package.swift` applies only to the compiler-plugin host.
+4. Route handlers use the bundled `@Route` macro. Automatic discovery uses the fixed Mach-O section `__DATA_CONST,__routekit`; keep the macro emission and `RouteSectionReader` in sync.
+5. Keep macro declarations in `Macros/Sources/RouteKitMacro` and compiler-plugin implementations in `Macros/Sources/RouteKitMacros`.
+6. After changing `Macros/Sources/RouteKitMacros`, run `./build.sh` and commit the refreshed `Prebuilt/RouteKitMacros` used by CocoaPods. Keep this binary tracked through Git LFS as configured in `.gitattributes`; never commit it as a regular Git blob.
+7. Configure `RouterConfig` before the first call to `Router.open` or `Router.canOpen`; configuration is intentionally frozen after routing begins.
+8. Changes to matching, registration, priority, interceptors, middleware, or route execution must include corresponding tests in `Tests/RouteKitTests`. Macro behavior changes must include tests in `Macros/Tests/RouteKitMacrosTests`.
+9. Validate SwiftPM with a generic iOS device build and format xcodebuild output with xcbeautify. Run the iOS test suite on an available simulator and run `swift test` from `Macros` for macro expansion tests.
+10. Validate CocoaPods changes with `pod lib lint RouteKit.podspec --allow-warnings`. Run pod and bundle commands with the system Ruby/rbenv environment outside the sandbox.
+11. Keep `Package.swift`, `RouteKit.podspec`, README installation examples, the prebuilt macro name, and release tags consistent when changing package names or versions.
+12. Do not commit generated Xcode projects, workspaces, DerivedData, or SwiftPM build directories.
+13. Do not add file-header comments to new Swift files.
+14. Keep `README.md` in English and maintain the equivalent Simplified Chinese documentation in `README.zh-CN.md` when public APIs, requirements, or installation steps change.
 
-## Commit
+## Commits
 
-使用英文 Conventional Commits，例如：
+Use English Conventional Commits, for example:
 
 ```text
 feat(router): add route middleware

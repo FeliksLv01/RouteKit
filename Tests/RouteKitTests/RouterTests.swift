@@ -1,5 +1,5 @@
 import XCTest
-@testable import TKRouter
+@testable import RouteKit
 
 @MainActor
 final class RouterTests: XCTestCase {
@@ -89,7 +89,7 @@ final class RouterTests: XCTestCase {
         XCTAssertFalse(DefaultFallbackPriorityRoute.didOpen)
     }
 
-    func testPartialParameterUsesTKRouterSemantics() {
+    func testPartialParameterUsesRouteKitSemantics() {
         prepare()
         var context: RouteContext?
         RouterConfig.defaultOpenHandler = { _, value in context = value }

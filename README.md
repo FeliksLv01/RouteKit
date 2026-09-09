@@ -1,59 +1,51 @@
-# TKRouter
+# RouteKit
 
-TKRouter 是一个 Swift URL 路由库，提供宏注册、路径参数、优先级、URL 拦截器、中间件以及同步/异步路由执行。
+[简体中文](README.zh-CN.md)
+
+RouteKit is a standalone Swift URL router with built-in macro registration, path parameters, route priorities, URL interceptors, middleware, and synchronous and asynchronous execution APIs.
 
 ## Requirements
 
 - iOS 13.0+
+- Mac Catalyst 13.0+
 - Swift 6.0+
-- TKMacros 0.0.4+
+
+RouteKit's page-routing API depends on UIKit and does not support macOS. The macOS deployment target declared by the internal `Macros` package applies only to the Swift compiler plugin.
 
 ## Swift Package Manager
 
-在 Xcode 的 Package Dependencies 中添加：
-
-```text
-https://github.com/TokenTeamiOS/TKRouter.git
-```
-
-或在 `Package.swift` 中声明：
+Add RouteKit in Xcode under Package Dependencies, or declare it in `Package.swift`:
 
 ```swift
 dependencies: [
     .package(
-        url: "https://github.com/TokenTeamiOS/TKRouter.git",
-        from: "0.1.0"
+        url: "https://github.com/FeliksLv01/RouteKit.git",
+        from: "0.0.1"
     )
 ]
 ```
 
-然后将 `TKRouter` library product 添加到 iOS target。SwiftPM 会自动解析并构建 TKMacros 的原生 macro target。
+Then add the `RouteKit` library product to your iOS target. SwiftPM builds the bundled macro target automatically.
 
 ## CocoaPods
 
 ```ruby
-pod 'TKRouter'
+pod 'RouteKit'
 ```
 
-两种依赖方式下，TKRouter 都会依赖并 re-export TKMacros，业务代码只需导入 TKRouter：
+If your private Specs repository contains `RouteKit`, place that source before the public Specs source in your Podfile.
+
+Both package managers expose the complete API through one import:
 
 ```swift
-import TKRouter
+import RouteKit
 ```
 
-使用 CocoaPods 时，如果 Pod target 无法展开间接依赖中的宏，请在 Podfile 中加载 TKMacros 提供的 Swift flags 脚本：
-
-```ruby
-require_relative 'Pods/TKMacros/Scripts/tk_swift_flags'
-
-post_install do |installer|
-  inject_tk_swift_flags_if_needed(installer)
-end
-```
+The `@Route` declaration, implementation, and prebuilt CocoaPods compiler plugin are bundled with RouteKit. TKMacros is not required.
 
 ## Configuration
 
-首次打开路由前配置默认 scheme 和页面打开方式：
+Configure the default URL scheme and page-opening behavior before the first call to `Router.open` or `Router.canOpen`:
 
 ```swift
 RouterConfig.scheme = "myapp"
@@ -62,12 +54,12 @@ RouterConfig.defaultOpenHandler = { viewController, context in
 }
 ```
 
-配置在第一次 `Router.open` 或 `Router.canOpen` 后冻结。
+The configuration is frozen after routing begins.
 
-## Page Route
+## Page routes
 
 ```swift
-import TKRouter
+import RouteKit
 import UIKit
 
 @Route(patterns: [
@@ -84,9 +76,9 @@ struct ProfileRoute: PageRoute {
 }
 ```
 
-`@Route` 会生成 `static func register()`，并把路由类型写入 `__DATA_CONST,__tk_routes`。TKRouter 在第一次使用时扫描 section 并完成懒注册。
+`@Route` generates `static func register()` and places the route type in `__DATA_CONST,__routekit`. RouteKit scans that section and registers routes lazily on first use.
 
-## Action Route
+## Action routes
 
 ```swift
 @Route(patterns: [
@@ -100,7 +92,7 @@ struct LogoutRoute: ActionRoute {
 }
 ```
 
-同步入口会立即返回 `RouteExecution`：
+The synchronous entry point returns a `RouteExecution` immediately:
 
 ```swift
 let execution = Router.open("session/logout")
@@ -108,7 +100,7 @@ let handled = await execution?.result
 execution?.cancel()
 ```
 
-异步入口会等待路由完成：
+The asynchronous entry point waits for completion:
 
 ```swift
 let handled = try await Router.open("session/logout")
@@ -116,16 +108,16 @@ let handled = try await Router.open("session/logout")
 
 ## Patterns
 
-在配置了 `RouterConfig.scheme = "myapp"` 后：
+With `RouterConfig.scheme = "myapp"`:
 
 | Pattern | Example | Description |
 | --- | --- | --- |
-| `profile/:id` | `myapp://profile/42` | 命名参数 |
-| `docs/*` | `myapp://docs/readme` | 单段通配 |
-| `flutter/**` | `myapp://flutter/home/detail` | 多段 catch-all |
-| `file/:{name}.json` | `myapp://file/report.json` | 部分参数 |
+| `profile/:id` | `myapp://profile/42` | Named parameter |
+| `docs/*` | `myapp://docs/readme` | Single-segment wildcard |
+| `flutter/**` | `myapp://flutter/home/detail` | Multi-segment catch-all |
+| `file/:{name}.json` | `myapp://file/report.json` | Partial parameter |
 
-显式传给 `Router.open(_:params:)` 的参数会覆盖 URL query 和路径参数中的同名值。
+Parameters passed explicitly to `Router.open(_:params:)` override URL query and path parameters with the same key.
 
 ## Priority
 
@@ -136,11 +128,11 @@ let handled = try await Router.open("session/logout")
 ])
 ```
 
-匹配顺序为 high、default、low。优先级只决定匹配结果，不会在高优先级 handler 返回 `false` 后继续尝试低优先级 handler。
+Routes are matched in `high`, `default`, then `low` priority order. Priority affects selection only; RouteKit does not fall back to a lower-priority handler when the selected handler returns `false`.
 
-## Custom Registration
+## Custom registration
 
-需要动态 pattern 时使用无参宏：
+Use the argument-free macro when a route needs a dynamic pattern:
 
 ```swift
 @Route
@@ -155,17 +147,17 @@ struct DynamicRoute: ActionRoute {
 }
 ```
 
-## Interceptors and Middleware
+## Interceptors and middleware
 
-`RouteURLInterceptor` 在路由匹配前执行，可重写、处理或拒绝 URL。`RouteMiddleware` 在匹配后执行，可包装全局或单个 handler 的响应链。
+`RouteURLInterceptor` runs before route matching and may rewrite, handle, or reject a URL. `RouteMiddleware` runs after matching and can wrap the global or route-specific responder chain.
 
 ```swift
 RouterConfig.urlInterceptors = [LegacyURLInterceptor()]
 RouterConfig.middlewares = [AnalyticsMiddleware()]
 ```
 
-单个路由可通过 `static var middlewares` 声明自己的中间件。
+Individual routes may declare middleware through `static var middlewares`.
 
 ## License
 
-TKRouter is available under the MIT license.
+RouteKit is available under the MIT license.

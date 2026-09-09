@@ -3,33 +3,30 @@
 import PackageDescription
 
 let package = Package(
-    name: "TKRouter",
+    name: "RouteKit",
     platforms: [
         .iOS(.v13),
         .macCatalyst(.v13),
     ],
     products: [
         .library(
-            name: "TKRouter",
-            targets: ["TKRouter"]
+            name: "RouteKit",
+            targets: ["RouteKit"]
         )
     ],
     dependencies: [
-        .package(
-            url: "https://github.com/TokenTeamiOS/TKMacros.git",
-            from: "0.0.4"
-        )
+        .package(path: "Macros")
     ],
     targets: [
         .target(
-            name: "TKRouter",
+            name: "RouteKit",
             dependencies: [
-                .product(name: "TKMacros", package: "TKMacros")
+                .product(name: "RouteKitMacro", package: "Macros")
             ]
         ),
         .testTarget(
-            name: "TKRouterTests",
-            dependencies: ["TKRouter"]
+            name: "RouteKitTests",
+            dependencies: ["RouteKit"]
         ),
     ]
 )
