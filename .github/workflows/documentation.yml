@@ -1,0 +1,58 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build DocC archive
+        run: |
+          xcodebuild docbuild \
+            -scheme RouteKit \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/RouteKitDerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            DOCC_HOSTING_BASE_PATH=RouteKit
+
+      - name: Prepare website
+        run: |
+          archive_path="$(find "$RUNNER_TEMP/RouteKitDerivedData/Build/Products" -type d -name 'RouteKit.doccarchive' -print -quit)"
+          test -n "$archive_path"
+          mkdir "$RUNNER_TEMP/RouteKitSite"
+          cp -R "$archive_path/." "$RUNNER_TEMP/RouteKitSite/"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/RouteKitSite
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

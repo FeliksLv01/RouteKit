@@ -6,6 +6,7 @@ RouteKit is a standalone Swift URL router with built-in macro registration, path
 
 ## Documentation
 
+- [Online documentation](https://felikslv01.github.io/RouteKit/documentation/routekit/)
 - [Getting Started](Sources/RouteKit/RouteKit.docc/GettingStarted.md)
 - [Defining Routes](Sources/RouteKit/RouteKit.docc/DefiningRoutes.md)
 - [Executing Routes](Sources/RouteKit/RouteKit.docc/ExecutingRoutes.md)
@@ -13,7 +14,7 @@ RouteKit is a standalone Swift URL router with built-in macro registration, path
 - [Installation](Sources/RouteKit/RouteKit.docc/Installation.md)
 - [DocC landing page](Sources/RouteKit/RouteKit.docc/RouteKit.md)
 
-The README is a practical overview. The DocC catalog contains the complete guides and generated API reference. Open the package in Xcode and choose **Product > Build Documentation** to browse it in the documentation viewer.
+The README is a practical overview. The DocC catalog contains the complete guides and generated API reference. Read it online through GitHub Pages, or open the package in Xcode and choose **Product > Build Documentation**.
 
 ## Requirements
 

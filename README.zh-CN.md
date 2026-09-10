@@ -6,6 +6,7 @@ RouteKit 是一个独立的 Swift URL 路由库，提供内置宏注册、路径
 
 ## 文档
 
+- [在线文档](https://felikslv01.github.io/RouteKit/documentation/routekit/)
 - [快速入门](Sources/RouteKit/RouteKit.docc/GettingStarted.md)
 - [定义路由](Sources/RouteKit/RouteKit.docc/DefiningRoutes.md)
 - [执行路由](Sources/RouteKit/RouteKit.docc/ExecutingRoutes.md)
@@ -13,7 +14,7 @@ RouteKit 是一个独立的 Swift URL 路由库，提供内置宏注册、路径
 - [安装](Sources/RouteKit/RouteKit.docc/Installation.md)
 - [DocC 首页](Sources/RouteKit/RouteKit.docc/RouteKit.md)
 
-README 提供常用功能概览；DocC catalog 包含完整指南和自动生成的 API Reference。在 Xcode 中打开 package，然后选择 **Product > Build Documentation**，即可在文档浏览器中查看。
+README 提供常用功能概览；DocC catalog 包含完整指南和自动生成的 API Reference。可以通过 GitHub Pages 在线阅读，也可以在 Xcode 中打开 package，然后选择 **Product > Build Documentation**。
 
 ## 环境要求
 
