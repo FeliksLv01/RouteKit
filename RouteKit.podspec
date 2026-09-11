@@ -26,5 +26,8 @@ Pod::Spec.new do |s|
     ts.pod_target_xcconfig = {
       'OTHER_SWIFT_FLAGS' => pod_macro_flags
     }
+    ts.user_target_xcconfig = {
+      'OTHER_SWIFT_FLAGS' => user_macro_flags
+    }
   end
 end
