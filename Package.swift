@@ -14,7 +14,11 @@ let package = Package(
         .library(
             name: "RouteKit",
             targets: ["RouteKit"]
-        )
+        ),
+        .library(
+            name: "RouteKitMacro",
+            targets: ["RouteKitMacro"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", from: "603.0.0")
