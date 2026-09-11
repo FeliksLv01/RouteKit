@@ -22,7 +22,7 @@ The README is a practical overview. The DocC catalog contains the complete guide
 - Mac Catalyst 13.0+
 - Swift 6.0+
 
-RouteKit's page-routing API depends on UIKit and does not support macOS. The macOS deployment target declared by the internal `RouteKitMacros` package applies only to the Swift compiler plugin.
+RouteKit's page-routing API depends on UIKit and does not support macOS. SwiftPM builds the internal `RouteKitMacros` target only as a compiler plugin for the development host.
 
 ## Swift Package Manager
 
@@ -44,6 +44,18 @@ Then add the `RouteKit` library product to your iOS target. SwiftPM builds the b
 ```ruby
 pod 'RouteKit'
 ```
+
+If another Pod target uses `@Route` through a direct or transitive dependency on RouteKit, copy `Scripts/route_kit_swift_flags.rb` into your application repository and load it from the Podfile:
+
+```ruby
+require_relative 'Scripts/route_kit_swift_flags'
+
+post_install do |installer|
+  inject_route_kit_swift_flags_if_needed(installer)
+end
+```
+
+The script adds the compiler-plugin flags only to Pod targets that depend on RouteKit. The application target receives the same flags from the podspec.
 
 If your private Specs repository contains `RouteKit`, place that source before the public Specs source in your Podfile.
 

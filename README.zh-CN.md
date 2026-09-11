@@ -22,7 +22,7 @@ README 提供常用功能概览；DocC catalog 包含完整指南和自动生成
 - Mac Catalyst 13.0+
 - Swift 6.0+
 
-RouteKit 的页面路由依赖 UIKit，不支持 macOS。内部 `RouteKitMacros` 子包声明的 macOS deployment target 只用于构建 Swift 编译器插件。
+RouteKit 的页面路由依赖 UIKit，不支持 macOS。SwiftPM 只会把内部 `RouteKitMacros` target 作为开发主机上的编译器插件构建。
 
 ## Swift Package Manager
 
@@ -44,6 +44,18 @@ dependencies: [
 ```ruby
 pod 'RouteKit'
 ```
+
+如果其他 Pod target 通过直接或传递依赖使用 `@Route`，请把 `Scripts/route_kit_swift_flags.rb` 复制到应用仓库，并在 Podfile 中加载：
+
+```ruby
+require_relative 'Scripts/route_kit_swift_flags'
+
+post_install do |installer|
+  inject_route_kit_swift_flags_if_needed(installer)
+end
+```
+
+脚本只会为直接或间接依赖 RouteKit 的 Pod target 注入编译器插件参数；应用 target 使用的同类参数由 podspec 提供。
 
 如果私有 Specs 仓库中包含 `RouteKit`，请在 Podfile 中将私有源放在公共 Specs 源之前。
 

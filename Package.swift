@@ -8,16 +8,13 @@ let package = Package(
     platforms: [
         .iOS(.v13),
         .macCatalyst(.v13),
+        // Required by the SwiftSyntax compiler-plugin host, not runtime support.
         .macOS(.v10_15),
     ],
     products: [
         .library(
             name: "RouteKit",
             targets: ["RouteKit"]
-        ),
-        .library(
-            name: "RouteKitMacro",
-            targets: ["RouteKitMacro"]
         ),
     ],
     dependencies: [
@@ -31,21 +28,22 @@ let package = Package(
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-            ],
-            path: "RouteKitMacros/Sources/RouteKitMacros"
-        ),
-        .target(
-            name: "RouteKitMacro",
-            dependencies: ["RouteKitMacros"],
-            path: "RouteKitMacros/Sources/RouteKitMacro"
+            ]
         ),
         .target(
             name: "RouteKit",
-            dependencies: ["RouteKitMacro"]
+            dependencies: ["RouteKitMacros"]
         ),
         .testTarget(
             name: "RouteKitTests",
             dependencies: ["RouteKit"]
+        ),
+        .testTarget(
+            name: "RouteKitMacrosTests",
+            dependencies: [
+                "RouteKitMacros",
+                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+            ]
         ),
     ]
 )

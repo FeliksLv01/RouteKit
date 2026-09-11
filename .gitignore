@@ -2,6 +2,8 @@
 .build/
 /Package.resolved
 DerivedData/
+Derived/
+*.xcodeproj/
 Pods/
 *.xcworkspace
 xcuserdata/
