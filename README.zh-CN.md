@@ -22,7 +22,7 @@ README 提供常用功能概览；DocC catalog 包含完整指南和自动生成
 - Mac Catalyst 13.0+
 - Swift 6.0+
 
-RouteKit 的页面路由依赖 UIKit，不支持 macOS。内部 `Macros` 子包声明的 macOS deployment target 只用于构建 Swift 编译器插件。
+RouteKit 的页面路由依赖 UIKit，不支持 macOS。内部 `RouteKitMacros` 子包声明的 macOS deployment target 只用于构建 Swift 编译器插件。
 
 ## Swift Package Manager
 

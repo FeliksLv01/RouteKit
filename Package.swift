@@ -15,13 +15,13 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "Macros")
+        .package(path: "RouteKitMacros")
     ],
     targets: [
         .target(
             name: "RouteKit",
             dependencies: [
-                .product(name: "RouteKitMacro", package: "Macros")
+                .product(name: "RouteKitMacro", package: "routekitmacros")
             ]
         ),
         .testTarget(

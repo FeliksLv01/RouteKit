@@ -10,7 +10,7 @@ build_config="release"
 
 mkdir -p "${output_dir}"
 
-cd Macros
+cd RouteKitMacros
 
 swift build -c "${build_config}" -Xswiftc -Osize
 bin_path_root=$(swift build -c "${build_config}" --show-bin-path)

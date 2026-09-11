@@ -22,7 +22,7 @@ The README is a practical overview. The DocC catalog contains the complete guide
 - Mac Catalyst 13.0+
 - Swift 6.0+
 
-RouteKit's page-routing API depends on UIKit and does not support macOS. The macOS deployment target declared by the internal `Macros` package applies only to the Swift compiler plugin.
+RouteKit's page-routing API depends on UIKit and does not support macOS. The macOS deployment target declared by the internal `RouteKitMacros` package applies only to the Swift compiler plugin.
 
 ## Swift Package Manager
 
