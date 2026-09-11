@@ -1,5 +1,6 @@
 // swift-tools-version: 6.0
 
+import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
@@ -7,6 +8,7 @@ let package = Package(
     platforms: [
         .iOS(.v13),
         .macCatalyst(.v13),
+        .macOS(.v10_15),
     ],
     products: [
         .library(
@@ -15,14 +17,27 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "RouteKitMacros")
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "603.0.0")
     ],
     targets: [
+        .macro(
+            name: "RouteKitMacros",
+            dependencies: [
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
+            ],
+            path: "RouteKitMacros/Sources/RouteKitMacros"
+        ),
+        .target(
+            name: "RouteKitMacro",
+            dependencies: ["RouteKitMacros"],
+            path: "RouteKitMacros/Sources/RouteKitMacro"
+        ),
         .target(
             name: "RouteKit",
-            dependencies: [
-                .product(name: "RouteKitMacro", package: "routekitmacros")
-            ]
+            dependencies: ["RouteKitMacro"]
         ),
         .testTarget(
             name: "RouteKitTests",
